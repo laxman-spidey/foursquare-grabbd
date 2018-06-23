@@ -10,10 +10,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></RelativeLayout>
 
+    <EditText
+        android:id="@+id/queryBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/searchBarContainer"
+        />
     <RelativeLayout
-        android:id="@+id/restaurentListFragementContainer"
+        android:id="@+id/restaurantSearchListFragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/searchBarContainer"></RelativeLayout>
+        android:layout_below="@+id/queryBox">
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

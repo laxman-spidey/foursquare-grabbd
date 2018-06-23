@@ -24,6 +24,11 @@ public class SearchBar extends LinearLayout {
     public static final int REQUEST_CODE_AUTOCOMPLETE = 101;
     public static final int REQUEST_CODE_LOCATION_PERMISSION = 102;
 
+    public int selectedLocationType = -1;
+    public static final int LOCATION_TYPE_PLACE = 1;
+    public static final int LOCATION_TYPE_LAT_LNG = 2;
+
+
     private int placesAutoCompleteRequestCode = REQUEST_CODE_AUTOCOMPLETE;
     private int locationPermissionRequestCode = REQUEST_CODE_LOCATION_PERMISSION;
 
@@ -31,6 +36,9 @@ public class SearchBar extends LinearLayout {
     private EditText searchEditText;
     private ImageButton myLocationButton;
     private String selectedPlace;
+    public double lat;
+    public double lng;
+
 
     private FusedLocationProviderClient mFusedLocationClient;
     GooglePlacesAutoCompleteHandler googlePlacesAutoCompleteHandler;
@@ -81,6 +89,8 @@ public class SearchBar extends LinearLayout {
                     if (task.isSuccessful()) {
                         if(task.getResult() != null) {
                             Location location = task.getResult();
+                            lat =location.getLatitude();
+                            lng = location.getLongitude();
                             searchEditText.setText(location.getLatitude() +", "+ location.getLongitude());
                             listener.onLocationSelected(location.getLatitude(), location.getLongitude());
                         }
@@ -108,7 +118,9 @@ public class SearchBar extends LinearLayout {
     public void handleAutoCompleteData(int requestCode, int resultCode, Intent data) {
         String result = googlePlacesAutoCompleteHandler.getResultString(requestCode, resultCode, data, activity);
         searchEditText.setText(result);
-        selectedPlace = googlePlacesAutoCompleteHandler.getOnlyPlace(requestCode, resultCode, data, activity);
+        selectedLocationType = LOCATION_TYPE_PLACE;
+//        selectedPlace = googlePlacesAutoCompleteHandler.getOnlyPlace(requestCode, resultCode, data, activity);
+        selectedPlace = result;
         listener.onLocationSelected(result);
     }
 

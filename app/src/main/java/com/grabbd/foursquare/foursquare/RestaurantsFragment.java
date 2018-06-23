@@ -82,18 +82,19 @@ public class RestaurantsFragment extends Fragment {
             }
         };
     }
+
     public void filter(String location, String section) {
         if (action == ACTION_EXPLORE) {
             FoursquareAPI.getInstance(getContext()).explore(location, section, getResponseListener());
         } else if (action == ACTION_SEARCH) {
-            FoursquareAPI.getInstance(getContext()).search(location, getResponseListener());
+            FoursquareAPI.getInstance(getContext()).search(location, section, getResponseListener());
         }
     }
     public void filter(double lat, double lng, String section) {
         if (action == ACTION_EXPLORE) {
             FoursquareAPI.getInstance(getContext()).explore(lat, lng, section, getResponseListener());
         } else if (action == ACTION_SEARCH) {
-            FoursquareAPI.getInstance(getContext()).search(lat, lng, getResponseListener());
+            FoursquareAPI.getInstance(getContext()).search(lat, lng, section, getResponseListener());
         }
     }
 

@@ -4,9 +4,12 @@ package com.grabbd.foursquare.foursquare;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 
@@ -16,6 +19,8 @@ public class SearchFragment extends Fragment {
     public static final int REQUEST_CODE_LOCATION_PERMISSION = 302;
 
     private SearchBar searchBar;
+    private EditText queryBox;
+
 
     public SearchFragment() {
         // Required empty public constructor
@@ -34,14 +39,56 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         setupSearchBar(view);
+        setupQueryBox(view);
         addRestaurantListFragment();
         return view;
     }
 
+    private void setupQueryBox(View view) {
+        queryBox = view.findViewById(R.id.queryBox);
+        queryBox.setEnabled(false);
+        queryBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (restaurantListFragment != null) {
+                    final String searchString = s != null ? s.toString() : "";
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+//                            setNoProfilesView(searchString);
+                        }
+                    });
+//                    searchPeopleFragment.setSearchString(searchString);
+                    if (!searchString.equals("")) {
+
+                        switch (searchBar.selectedLocationType) {
+                            case -1: break;
+                            case SearchBar.LOCATION_TYPE_PLACE: {
+                                restaurantListFragment.filter(searchBar.getSelectedPlace(), searchString);
+                            }
+                            case SearchBar.LOCATION_TYPE_LAT_LNG: {
+                                restaurantListFragment.filter(searchBar.lat, searchBar.lng, searchString);
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
     RestaurantsFragment restaurantListFragment;
     private void addRestaurantListFragment() {
         restaurantListFragment = RestaurantsFragment.newInstance(RestaurantsFragment.ACTION_SEARCH);
-        getFragmentManager().beginTransaction().add(R.id.restaurentListFragementContainer, restaurantListFragment).commit();
+        getFragmentManager().beginTransaction().add(R.id.restaurantSearchListFragmentContainer, restaurantListFragment).commit();
 
     }
 
@@ -56,11 +103,13 @@ public class SearchFragment extends Fragment {
             @Override
             public void onLocationSelected(String location) {
                 restaurantListFragment.filter(location, null);
+                queryBox.setEnabled(true);
             }
 
             @Override
             public void onLocationSelected(double lat, double lng) {
                 restaurantListFragment.filter(lat, lng, null);
+                queryBox.setEnabled(true);
             }
         });
 

@@ -2,7 +2,6 @@ package com.grabbd.foursquare.foursquare.models;
 
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -54,6 +53,22 @@ public class Restaurant {
         for (int i = 0; i < venues.length(); i++) {
             try {
                 Restaurant restaurant =  Restaurant.fromJson(venues.getJSONObject(i).getJSONObject("venue").toString());
+                if (restaurant != null) {
+                    //skip the object if there is an exception occurred.
+                    restaurants.add(restaurant);
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return restaurants;
+    }
+    public static List<Restaurant> getFromSearchVenues(JSONArray venues)  {
+        List<Restaurant> restaurants = new ArrayList<>();
+        for (int i = 0; i < venues.length(); i++) {
+            try {
+                Restaurant restaurant =  Restaurant.fromJson(venues.getJSONObject(i).toString());
                 if (restaurant != null) {
                     //skip the object if there is an exception occurred.
                     restaurants.add(restaurant);

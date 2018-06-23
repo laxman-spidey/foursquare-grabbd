@@ -39,15 +39,14 @@ public class RestaurantsRecyclerViewAdapter extends RecyclerView.Adapter<Restaur
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-//        holder.mNameView.setText(mValues.get(position));
 
+        holder.setValues(mValues.get(position));
 
         //hide all the detail views.
         holder.mDetailsView.setVisibility(View.GONE);
 
         //get the current position and reload the list when a restaurant is clicked
-        holder.mTitleView.setOnClickListener(v -> {
+        holder.mView.setOnClickListener(v -> {
             currentPosition = position;
             notifyDataSetChanged();
         });
@@ -91,6 +90,10 @@ public class RestaurantsRecyclerViewAdapter extends RecyclerView.Adapter<Restaur
             mState = view.findViewById(R.id.state);
         }
 
+        public void setValues(Restaurant restaurant) {
+            mItem = restaurant;
+            mNameView.setText(restaurant.name);
+        }
 //        @Override
 //        public String toString() {
 //            return super.toString() + " '" + mContentView.getText() + "'";

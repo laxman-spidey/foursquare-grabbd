@@ -38,15 +38,21 @@ public class FoursquareAPI extends VolleyModel {
     }
 
 
-    public void search(String location, ResponseListener listener) {
+    public void search(String location, String query, ResponseListener listener) {
         Map<String, String> params = new HashMap<>();
         params.put("near", location);
+        if (query != null) {
+            params.put("query", query);
+        }
         sendRequest(params, SEARCH, listener);
 
     }
-    public void search(double lat, double lng, ResponseListener listener) {
+    public void search(double lat, double lng, String query, ResponseListener listener) {
         Map<String, String> params = new HashMap<>();
         params.put("ll", lat+","+lng);
+        if (query != null) {
+            params.put("query", query);
+        }
         sendRequest(params, SEARCH, listener);
     }
 
@@ -57,15 +63,27 @@ public class FoursquareAPI extends VolleyModel {
         StringRequest jsonObjectRequest = new StringRequest
                 (Request.Method.GET, url, response -> {
 
-                    List<Restaurant> restaurants;
+                    List<Restaurant> restaurants = null;
                     try {
                         JSONObject responseObject = new JSONObject(response);
-                        JSONArray venues = responseObject
-                                .getJSONObject("response")
-                                .getJSONArray("groups")
-                                .getJSONObject(0)
-                                .getJSONArray("items");
-                        restaurants = Restaurant.getFromVenues(venues);
+
+                        JSONArray venues = null;
+                        if (API.equals(EXPLORE)) {
+                            venues = responseObject
+                                    .getJSONObject("response")
+                                    .getJSONArray("groups")
+                                    .getJSONObject(0)
+                                    .getJSONArray("items");
+                            restaurants = Restaurant.getFromVenues(venues);
+                        }
+                        else if(API.equals(SEARCH)) {
+                            venues = responseObject
+                                    .getJSONObject("response")
+                                    .getJSONArray("venues");
+                            restaurants = Restaurant.getFromSearchVenues(venues);
+                        }
+
+
                         listener.onResponseRecieved(new ResponseListener.Response(true, restaurants));
                         Log.i(TAG, new Gson().toJson(restaurants));
                     } catch (Exception e) {
