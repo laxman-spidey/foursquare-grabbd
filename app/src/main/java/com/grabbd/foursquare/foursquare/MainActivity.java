@@ -1,5 +1,6 @@
 package com.grabbd.foursquare.foursquare;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,6 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,17 +42,15 @@ public class MainActivity extends AppCompatActivity implements ExploreFragment.O
      */
     private ViewPager mViewPager;
 
+
+    private ExploreFragment exploreFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
+        exploreFragment = ExploreFragment.newInstance("", "");
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mSectionsPagerAdapter.addFrag(ExploreFragment.newInstance("", ""), "Explore");
+        mSectionsPagerAdapter.addFrag(exploreFragment, "Explore");
         mSectionsPagerAdapter.addFrag(PlaceholderFragment.newInstance(2), "Search");
 
         // Set up the ViewPager with the sections adapter.
@@ -58,13 +58,18 @@ public class MainActivity extends AppCompatActivity implements ExploreFragment.O
         mViewPager.setAdapter(mSectionsPagerAdapter);
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
-
-
-
-
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.i("TAG", "  " + requestCode + ",  " + resultCode + ", ");
+        if (resultCode == RESULT_OK) {
+            if (requestCode == GooglePlacesAutoCompleteHandler.REQUEST_CODE_AUTOCOMPLETE) {
+                exploreFragment.onActivityResult(requestCode, resultCode, data);
+            }
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -139,10 +144,8 @@ public class MainActivity extends AppCompatActivity implements ExploreFragment.O
         }
 
 
-
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
-
 
 
         @Override

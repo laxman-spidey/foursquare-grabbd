@@ -1,0 +1,26 @@
+<resources>
+    <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=50:FB:31:89:B6:45:6A:0D:5F:83:5A:AC:B7:1F:78:E4:38:87:7F:44%3Bcom.crafter.app
+
+    You can also add your credentials to an existing key, using these values:
+
+    Package name:
+    50:FB:31:89:B6:45:6A:0D:5F:83:5A:AC:B7:1F:78:E4:38:87:7F:44
+
+    SHA-1 certificate fingerprint:
+    50:FB:31:89:B6:45:6A:0D:5F:83:5A:AC:B7:1F:78:E4:38:87:7F:44
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+        AIzaSyCh_jVSngGn0_Uk0eGpmaOAuL8etjWc93E
+    </string>
+</resources>

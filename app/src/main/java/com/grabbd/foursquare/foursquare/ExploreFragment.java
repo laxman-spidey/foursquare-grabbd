@@ -1,6 +1,7 @@
 package com.grabbd.foursquare.foursquare;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -30,6 +31,7 @@ public class ExploreFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private SearchBar searchBar;
     public ExploreFragment() {
         // Required empty public constructor
     }
@@ -69,7 +71,8 @@ public class ExploreFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_explore, container, false);
         RelativeLayout layoutContainer = view.findViewById(R.id.search_bar_container);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        layoutContainer.addView(new SearchBar(getContext()), layoutParams);
+        searchBar = new SearchBar(getActivity());
+        layoutContainer.addView(searchBar, layoutParams);
         addRestaurentListFragment();
         return view;
     }
@@ -81,6 +84,9 @@ public class ExploreFragment extends Fragment {
     }
 
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        searchBar.handleAutoCompleteData(requestCode, resultCode, data);
+    }
 
     @Override
     public void onAttach(Context context) {
