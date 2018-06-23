@@ -2,9 +2,9 @@ package com.grabbd.foursquare.foursquare.RESTModels;
 
 public interface ResponseListener {
 
-    public abstract void onResponseRecieved(Response response);
+    void onResponseRecieved(Response response);
 
-    public static class Response {
+    class Response {
         public boolean isOkay;
         public Object data;
 

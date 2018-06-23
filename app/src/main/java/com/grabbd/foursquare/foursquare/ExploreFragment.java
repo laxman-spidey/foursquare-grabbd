@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.grabbd.foursquare.foursquare.models.Restaurant;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -69,16 +71,34 @@ public class ExploreFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_explore, container, false);
-        RelativeLayout layoutContainer = view.findViewById(R.id.search_bar_container);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        searchBar = new SearchBar(getActivity());
-        layoutContainer.addView(searchBar, layoutParams);
+        setupSearchBar(view);
         addRestaurentListFragment();
         return view;
     }
 
+    private void setupSearchBar(View view) {
+        RelativeLayout layoutContainer = view.findViewById(R.id.searchBarContainer);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        searchBar = new SearchBar(getActivity());
+        layoutContainer.addView(searchBar, layoutParams);
+
+        searchBar.setOnLocationSelectedListener(new SearchBar.OnLocationSelectedListener() {
+            @Override
+            public void onLocationSelected(String location) {
+                restaurentListFragment.filter(location);
+            }
+
+            @Override
+            public void onLocationSelected(double lat, double lng) {
+
+            }
+        });
+
+    }
+
+    RestaurantsFragment restaurentListFragment;
     private void addRestaurentListFragment() {
-        RestaurantListFragment restaurentListFragment = RestaurantListFragment.newInstance(1);
+        restaurentListFragment = RestaurantsFragment.newInstance(RestaurantsFragment.ACTION_EXPLORE);
         getFragmentManager().beginTransaction().add(R.id.restaurentListFragementContainer, restaurentListFragment).commit();
 
     }
