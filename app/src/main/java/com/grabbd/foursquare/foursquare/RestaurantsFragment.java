@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.grabbd.foursquare.foursquare.RESTModels.FoursquareAPI;
+import com.grabbd.foursquare.foursquare.RESTModels.ResponseListener;
 import com.grabbd.foursquare.foursquare.models.Restaurant;
 
 import java.util.ArrayList;
@@ -62,25 +63,38 @@ public class RestaurantsFragment extends Fragment {
 //            }
             adapter = new RestaurantsRecyclerViewAdapter(getContext(), restaurants);
             recyclerView.setAdapter(adapter);
-            filter("Chicago, IL");
+
         }
         return view;
     }
 
-    public void filter(String location) {
-        FoursquareAPI.getInstance(getContext()).explore(location, response -> {
+
+    private ResponseListener getResponseListener() {
+        return response -> {
             if (response.isOkay) {
                 if (response.data != null) {
                     List<Restaurant> data = (List<Restaurant>) response.data;
+                    restaurants.clear();
                     restaurants.addAll(data);
                     adapter.notifyDataSetChanged();
 
                 }
             }
-        });
+        };
     }
-    public void filter(double lat, double lng) {
-
+    public void filter(String location, String section) {
+        if (action == ACTION_EXPLORE) {
+            FoursquareAPI.getInstance(getContext()).explore(location, section, getResponseListener());
+        } else if (action == ACTION_SEARCH) {
+            FoursquareAPI.getInstance(getContext()).search(location, getResponseListener());
+        }
+    }
+    public void filter(double lat, double lng, String section) {
+        if (action == ACTION_EXPLORE) {
+            FoursquareAPI.getInstance(getContext()).explore(lat, lng, section, getResponseListener());
+        } else if (action == ACTION_SEARCH) {
+            FoursquareAPI.getInstance(getContext()).search(lat, lng, getResponseListener());
+        }
     }
 
 

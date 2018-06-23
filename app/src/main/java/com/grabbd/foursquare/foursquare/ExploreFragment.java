@@ -72,12 +72,12 @@ public class ExploreFragment extends Fragment {
         searchBar.setOnLocationSelectedListener(new SearchBar.OnLocationSelectedListener() {
             @Override
             public void onLocationSelected(String location) {
-                restaurantListFragment.filter(location);
+                restaurantListFragment.filter(location, null);
             }
 
             @Override
             public void onLocationSelected(double lat, double lng) {
-
+                restaurantListFragment.filter(lat, lng);
             }
         });
 
