@@ -12,16 +12,20 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 /**
  * TODO: document your custom view class.
  */
 public class SearchBar extends LinearLayout {
-    private static final int REQUEST_ACCESS_LOCATION = 100;
+    public static final int REQUEST_CODE_AUTOCOMPLETE = 101;
+    public static final int REQUEST_CODE_LOCATION_PERMISSION = 102;
+
+    private int placesAutoCompleteRequestCode = REQUEST_CODE_AUTOCOMPLETE;
+    private int locationPermissionRequestCode = REQUEST_CODE_LOCATION_PERMISSION;
 
     private Activity activity;
     private EditText searchEditText;
@@ -51,7 +55,7 @@ public class SearchBar extends LinearLayout {
 
     private void openGooglePlacesView() {
         googlePlacesAutoCompleteHandler = new GooglePlacesAutoCompleteHandler();
-        googlePlacesAutoCompleteHandler.openAutocompleteActivity(activity);
+        googlePlacesAutoCompleteHandler.openAutocompleteActivity(placesAutoCompleteRequestCode, activity);
     }
 
     private void getCurrentLocation() {
@@ -60,47 +64,81 @@ public class SearchBar extends LinearLayout {
             return;
         }
         mFusedLocationClient.getLastLocation()
-                .addOnSuccessListener(activity, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
-                            // Logic to handle location object
+//                .addOnSuccessListener(activity, location -> {
+//
+//                    // Got last known location. In some rare situations this can be null.
+//                    if (location == null) {
+//                        Toast.makeText(activity, "Unable to locate you. Please try again.", Toast.LENGTH_SHORT).show();
+//                        return;
+//                    }
+//                    searchEditText.setText(location.getLatitude() +", "+ location.getLongitude());
+//                    listener.onLocationSelected(location.getLatitude(), location.getLongitude());
+//                })
+//                .addOnFailureListener(e -> {
+//                    e.printStackTrace();
+//                })
+                .addOnCompleteListener(activity, task -> {
+                    if (task.isSuccessful()) {
+                        if(task.getResult() != null) {
+                            Location location = task.getResult();
+                            searchEditText.setText(location.getLatitude() +", "+ location.getLongitude());
+                            listener.onLocationSelected(location.getLatitude(), location.getLongitude());
                         }
+                        else {
+                            Toast.makeText(activity, "Unable to locate you. Please try again.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    else {
+                        task.getException().printStackTrace();
+                        Toast.makeText(activity, "Exception Unable to locate you. Please try again.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
+    public void handleOnActivityCompleted(int requestCode, int resultCode, Intent data) {
+        if (requestCode == locationPermissionRequestCode) {
+            getCurrentLocation();
+        }
+        else if( requestCode == placesAutoCompleteRequestCode) {
+            handleAutoCompleteData(requestCode, resultCode, data);
+        }
+
+    }
+
     public void handleAutoCompleteData(int requestCode, int resultCode, Intent data) {
-        String result = googlePlacesAutoCompleteHandler.getResultString(requestCode, resultCode, data,activity);
+        String result = googlePlacesAutoCompleteHandler.getResultString(requestCode, resultCode, data, activity);
         searchEditText.setText(result);
         selectedPlace = googlePlacesAutoCompleteHandler.getOnlyPlace(requestCode, resultCode, data, activity);
         listener.onLocationSelected(result);
     }
+
 
     public String getSelectedPlace() {
         return selectedPlace;
     }
 
 
-    public boolean requestLocationPermission()
-    {
+    public boolean requestLocationPermission() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true;
         }
-        if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getContext(),Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             return true;
-        }
-        else
-        {
-            activity.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_ACCESS_LOCATION);
+        } else {
+            activity.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, locationPermissionRequestCode);
         }
         return false;
     }
 
     private OnLocationSelectedListener listener;
+
     public void setOnLocationSelectedListener(OnLocationSelectedListener listener) {
         this.listener = listener;
+    }
+
+    public void setRequestCodes(int placesAutoCompleteRequestCode, int locationPermissionRequestCode) {
+        this.placesAutoCompleteRequestCode = placesAutoCompleteRequestCode;
+        this.locationPermissionRequestCode = locationPermissionRequestCode;
     }
     public interface OnLocationSelectedListener {
         void onLocationSelected(String location);

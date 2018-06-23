@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.grabbd.foursquare.foursquare.RESTModels.Foursquare;
+import com.grabbd.foursquare.foursquare.RESTModels.FoursquareAPI;
 import com.grabbd.foursquare.foursquare.models.Restaurant;
 
 import java.util.ArrayList;
@@ -68,7 +68,7 @@ public class RestaurantsFragment extends Fragment {
     }
 
     public void filter(String location) {
-        Foursquare.getInstance(getContext()).explore(location, response -> {
+        FoursquareAPI.getInstance(getContext()).explore(location, response -> {
             if (response.isOkay) {
                 if (response.data != null) {
                     List<Restaurant> data = (List<Restaurant>) response.data;

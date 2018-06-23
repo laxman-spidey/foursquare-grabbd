@@ -9,6 +9,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
+
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -25,6 +26,7 @@ public class GooglePlacesAutoCompleteHandler {
 
     public static final int REQUEST_CODE_AUTOCOMPLETE = 102;
 
+    public int requestCode = REQUEST_CODE_AUTOCOMPLETE;
     /**
      * Helper method to format information about a place nicely.
      */
@@ -37,6 +39,9 @@ public class GooglePlacesAutoCompleteHandler {
 
     }
 
+    public void openAutocompleteActivity(int requestCode, Activity activity) {
+        this.requestCode = requestCode;
+    }
     public void openAutocompleteActivity(Activity activity) {
         try {
             // The autocomplete activity requires Google Play Services to be available. The intent
@@ -45,7 +50,7 @@ public class GooglePlacesAutoCompleteHandler {
                     .setFilter(new AutocompleteFilter.Builder().setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES).build())
                     .build(activity);
 //            intent.putExtra()
-            activity.startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE);
+            activity.startActivityForResult(intent, requestCode);
         } catch (GooglePlayServicesRepairableException e) {
             // Indicates that Google Play Services is either not installed or not up to date. Prompt
             // the user to correct the issue.
@@ -72,7 +77,7 @@ public class GooglePlacesAutoCompleteHandler {
         Spanned result = null;
         String resultString = null;
         // Check that the result was from the autocomplete widget.
-        if (requestCode == REQUEST_CODE_AUTOCOMPLETE) {
+        if (requestCode == requestCode) {
             if (resultCode == activity.RESULT_OK) {
                 // Get the user's selected place from the Intent.
                 Place place = PlaceAutocomplete.getPlace(activity, data);
@@ -108,7 +113,7 @@ public class GooglePlacesAutoCompleteHandler {
         Spanned result = null;
         String resultString = null;
         // Check that the result was from the autocomplete widget.
-        if (requestCode == REQUEST_CODE_AUTOCOMPLETE) {
+        if (requestCode == requestCode) {
             if (resultCode == activity.RESULT_OK) {
                 // Get the user's selected place from the Intent.
                 Place place = PlaceAutocomplete.getPlace(activity, data);

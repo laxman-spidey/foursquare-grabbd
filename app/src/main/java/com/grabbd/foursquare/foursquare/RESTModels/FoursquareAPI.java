@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class Foursquare extends VolleyModel {
+public class FoursquareAPI extends VolleyModel {
 
     public void explore(String location, ResponseListener listener) {
 
@@ -94,18 +94,18 @@ public class Foursquare extends VolleyModel {
 
 
 
-    private static Foursquare singleton = null;
+    private static FoursquareAPI singleton = null;
 
-    public static Foursquare getInstance(Context context) {
+    public static FoursquareAPI getInstance(Context context) {
         if (singleton == null) {
-            singleton = new Foursquare(context);
+            singleton = new FoursquareAPI(context);
         }
         return singleton;
     }
 
-    public static String TAG = Foursquare.class.getSimpleName();
+    public static String TAG = FoursquareAPI.class.getSimpleName();
 
-    public Foursquare(Context context) {
+    public FoursquareAPI(Context context) {
         setContext(context);
     }
 }
