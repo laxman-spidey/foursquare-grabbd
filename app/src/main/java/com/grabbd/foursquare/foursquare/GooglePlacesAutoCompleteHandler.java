@@ -41,6 +41,7 @@ public class GooglePlacesAutoCompleteHandler {
 
     public void openAutocompleteActivity(int requestCode, Activity activity) {
         this.requestCode = requestCode;
+        openAutocompleteActivity(activity);
     }
     public void openAutocompleteActivity(Activity activity) {
         try {

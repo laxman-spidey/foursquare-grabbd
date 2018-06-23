@@ -39,14 +39,16 @@ public class MainActivity extends AppCompatActivity implements ExploreFragment.O
 
 
     private ExploreFragment exploreFragment;
+    private SearchFragment searchFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         exploreFragment = ExploreFragment.newInstance("", "");
+        searchFragment = new SearchFragment();
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mSectionsPagerAdapter.addFrag(exploreFragment, "Explore");
-        mSectionsPagerAdapter.addFrag(PlaceholderFragment.newInstance(2), "Search");
+        mSectionsPagerAdapter.addFrag(searchFragment, "Search");
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -64,7 +66,14 @@ public class MainActivity extends AppCompatActivity implements ExploreFragment.O
                 case ExploreFragment.REQUEST_CODE_AUTOCOMPLETE: ;
                 case ExploreFragment.REQUEST_CODE_LOCATION_PERMISSION: {
                     exploreFragment.onActivityResult(requestCode, resultCode, data);
+                    break;
                 }
+                case SearchFragment.REQUEST_CODE_AUTOCOMPLETE: ;
+                case SearchFragment.REQUEST_CODE_LOCATION_PERMISSION: {
+                    searchFragment.onActivityResult(requestCode, resultCode, data);
+                    break;
+                }
+
             }
 
         }

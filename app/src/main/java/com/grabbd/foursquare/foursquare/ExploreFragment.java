@@ -77,7 +77,7 @@ public class ExploreFragment extends Fragment {
 
             @Override
             public void onLocationSelected(double lat, double lng) {
-                restaurantListFragment.filter(lat, lng);
+                restaurantListFragment.filter(lat, lng, null);
             }
         });
 
