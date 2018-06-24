@@ -97,7 +97,7 @@ public class FoursquareAPI extends VolleyModel {
                     listener.onResponseRecieved(new ResponseListener.Response(false, null));
                 });
         Log.i(TAG, jsonObjectRequest.toString());
-        getInstanceRequestQueue(getContext()).add(jsonObjectRequest);
+        cancelPreviousAndAddRequestToQueue(getContext(), jsonObjectRequest, API);
     }
 
 

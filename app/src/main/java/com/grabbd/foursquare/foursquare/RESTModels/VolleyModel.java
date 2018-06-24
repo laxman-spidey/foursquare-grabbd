@@ -2,15 +2,12 @@ package com.grabbd.foursquare.foursquare.RESTModels;
 
 import android.content.Context;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.HashMap;
 import java.util.Map;
 
 public class VolleyModel {
@@ -77,6 +74,10 @@ public class VolleyModel {
         }
         return sb.toString();
     }
-
+    public static void cancelPreviousAndAddRequestToQueue(Context context, Request request, String TAG) {
+        getInstanceRequestQueue(context).cancelAll(TAG);
+        request.setTag(TAG);
+        getInstanceRequestQueue(context).add(request);
+    }
 
 }
