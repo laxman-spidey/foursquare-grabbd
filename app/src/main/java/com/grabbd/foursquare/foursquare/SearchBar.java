@@ -83,6 +83,7 @@ public class SearchBar extends LinearLayout {
                     if (task.isSuccessful()) {
                         if (task.getResult() != null) {
                             Location location = task.getResult();
+                            selectedLocationType = LOCATION_TYPE_LAT_LNG;
                             lat = location.getLatitude();
                             lng = location.getLongitude();
                             listener.onLocationSelected(location.getLatitude(), location.getLongitude());
@@ -128,7 +129,6 @@ public class SearchBar extends LinearLayout {
         String result = googlePlacesAutoCompleteHandler.getResultString(requestCode, resultCode, data, activity);
         searchEditText.setText(result);
         selectedLocationType = LOCATION_TYPE_PLACE;
-//        selectedPlace = googlePlacesAutoCompleteHandler.getOnlyPlace(requestCode, resultCode, data, activity);
         selectedPlace = result;
         listener.onLocationSelected(result);
     }

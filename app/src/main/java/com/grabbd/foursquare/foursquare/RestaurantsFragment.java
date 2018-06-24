@@ -64,6 +64,7 @@ public class RestaurantsFragment extends BaseFragment {
 //            } else {
 //                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
 //            }
+
             adapter = new RestaurantsRecyclerViewAdapter(getContext(), restaurants);
             recyclerView.setAdapter(adapter);
 

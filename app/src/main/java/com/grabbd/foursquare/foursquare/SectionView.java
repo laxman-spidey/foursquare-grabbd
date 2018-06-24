@@ -45,14 +45,14 @@ public class SectionView extends LinearLayout {
         text.setText(a.getText(R.styleable.sectionView_sectionLabel));
         layout.setOnClickListener(v -> {
             setSelected();
+            listener.onSelected(text.getText().toString());
         });
         return layout;
     }
 
-    public void setSelected() {
+    private void setSelected() {
         ViewGroup viewGroup = (ViewGroup) this.getParent();
         int count = viewGroup.getChildCount();
-
         SectionView v = null;
         for(int i=0; i<count; i++) {
             v = (SectionView) viewGroup.getChildAt(i);
@@ -61,7 +61,11 @@ public class SectionView extends LinearLayout {
         layout.setCardBackgroundColor(getResources().getColor(R.color.sectionSelected));
     }
 
-    public interface onSelectedListener {
+    private OnSelectedListener listener;
+    public void setOnSelectedListener(OnSelectedListener listener) {
+        this.listener = listener;
+    }
+    public interface OnSelectedListener {
         void onSelected(String selectedText);
     }
 

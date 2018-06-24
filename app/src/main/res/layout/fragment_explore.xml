@@ -25,9 +25,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none"
+        android:id="@+id/sectionListContainer"
         android:layout_below="@+id/searchBarContainer">
 
         <LinearLayout xmlns:custom="http://schemas.android.com/apk/res/com.grabbd.foursquare.foursquare"
+            android:id="@+id/sectionsList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -111,7 +113,7 @@
         android:id="@+id/restaurentListFragementContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/searchBarContainer">
+        android:layout_below="@+id/sectionListContainer">
 
 
     </RelativeLayout>

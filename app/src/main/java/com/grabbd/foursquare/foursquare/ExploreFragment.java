@@ -58,10 +58,36 @@ public class ExploreFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_explore, container, false);
         setupSearchBar(view);
+        setupSectionList(view);
         addRestaurantListFragment();
         return view;
     }
 
+    private ViewGroup sectionList;
+    private void setupSectionList(View view) {
+
+        sectionList = view.findViewById(R.id.sectionsList);
+        sectionList.setVisibility(View.INVISIBLE);
+        int count = sectionList.getChildCount();
+        SectionView v = null;
+        for(int i=0; i<count; i++) {
+            v = (SectionView) sectionList.getChildAt(i);
+            v.setOnSelectedListener(selectedText -> {
+                switch (searchBar.selectedLocationType) {
+                    case -1: break;
+                    case SearchBar.LOCATION_TYPE_PLACE: {
+                        restaurantListFragment.filter(searchBar.getSelectedPlace(), selectedText);
+                        break;
+                    }
+                    case SearchBar.LOCATION_TYPE_LAT_LNG: {
+                        restaurantListFragment.filter(searchBar.lat, searchBar.lng, selectedText);
+                        break;
+                    }
+                }
+            });
+        }
+
+    }
     private void setupSearchBar(View view) {
         RelativeLayout layoutContainer = view.findViewById(R.id.searchBarContainer);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -73,11 +99,13 @@ public class ExploreFragment extends Fragment {
             @Override
             public void onLocationSelected(String location) {
                 restaurantListFragment.filter(location, null);
+                sectionList.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onLocationSelected(double lat, double lng) {
                 restaurantListFragment.filter(lat, lng, null);
+                sectionList.setVisibility(View.VISIBLE);
             }
         });
 
