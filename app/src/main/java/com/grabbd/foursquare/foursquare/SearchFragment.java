@@ -27,7 +27,6 @@ public class SearchFragment extends Fragment {
     }
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +44,7 @@ public class SearchFragment extends Fragment {
     }
 
     private String searchString;
+
     private void setupQueryBox(View view) {
         queryBox = view.findViewById(R.id.queryBox);
         queryBox.setEnabled(false);
@@ -59,18 +59,19 @@ public class SearchFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (restaurantListFragment != null) {
                     searchString = s != null ? s.toString() : "";
-                    if (!searchString.equals("")) {
-
-                        switch (searchBar.selectedLocationType) {
-                            case -1: break;
-                            case SearchBar.LOCATION_TYPE_PLACE: {
-                                restaurantListFragment.filter(searchBar.getSelectedPlace(), searchString);
-                            }
-                            case SearchBar.LOCATION_TYPE_LAT_LNG: {
-                                restaurantListFragment.filter(searchBar.lat, searchBar.lng, searchString);
-                            }
+                    switch (searchBar.selectedLocationType) {
+                        case -1:
+                            break;
+                        case SearchBar.LOCATION_TYPE_PLACE: {
+                            restaurantListFragment.filter(searchBar.getSelectedPlace(), searchString);
+                            break;
+                        }
+                        case SearchBar.LOCATION_TYPE_LAT_LNG: {
+                            restaurantListFragment.filter(searchBar.lat, searchBar.lng, searchString);
+                            break;
                         }
                     }
+
                 }
             }
 
@@ -80,7 +81,9 @@ public class SearchFragment extends Fragment {
             }
         });
     }
+
     RestaurantsFragment restaurantListFragment;
+
     private void addRestaurantListFragment() {
         restaurantListFragment = RestaurantsFragment.newInstance(RestaurantsFragment.ACTION_SEARCH);
         getFragmentManager().beginTransaction().add(R.id.restaurantSearchListFragmentContainer, restaurantListFragment).commit();
@@ -115,6 +118,7 @@ public class SearchFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         searchBar.handleOnActivityCompleted(requestCode, resultCode, data);
     }
+
     public void onRequestPermissionsResult(int requestCode, int grantresult) {
         searchBar.onRequestPermissionsResult(requestCode, grantresult);
     }

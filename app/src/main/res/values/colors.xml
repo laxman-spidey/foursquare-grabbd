@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#2d5be3</color>
-    <color name="colorPrimaryDark">#0732a2</color>
-    <color name="colorAccent">#f94877</color>
+    <color name="colorPrimary">#2196F3</color>
+    <!--<color name="colorPrimaryDark">#0732a2</color>-->
+    <color name="colorPrimaryDark">#2196F3</color>
+    <color name="colorAccent">#FF5722</color>
     <color name="tabSelectedColor">@color/white</color>
     <color name="tabColor">#99FFFFFF</color>
     <color name="white">#FFFFFF</color>
-    <color name="sectionSelected">#f8bbd0</color>
+    <color name="sectionSelected">#40C4FF</color>
 </resources>
