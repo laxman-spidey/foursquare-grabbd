@@ -117,12 +117,18 @@ public class SearchBar extends LinearLayout {
     }
 
     public void handleOnActivityCompleted(int requestCode, int resultCode, Intent data) {
-        if (requestCode == locationPermissionRequestCode) {
-            getCurrentLocation();
-        } else if (requestCode == placesAutoCompleteRequestCode) {
+
+        if (requestCode == placesAutoCompleteRequestCode) {
             handleAutoCompleteData(requestCode, resultCode, data);
         }
+    }
 
+    public void onRequestPermissionsResult(int requestCode, int grantresult) {
+        if (requestCode == locationPermissionRequestCode) {
+            if (grantresult == PackageManager.PERMISSION_GRANTED) {
+                getCurrentLocation();
+            }
+        }
     }
 
     public void handleAutoCompleteData(int requestCode, int resultCode, Intent data) {

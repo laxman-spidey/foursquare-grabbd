@@ -44,6 +44,7 @@ public class SearchFragment extends Fragment {
         return view;
     }
 
+    private String searchString;
     private void setupQueryBox(View view) {
         queryBox = view.findViewById(R.id.queryBox);
         queryBox.setEnabled(false);
@@ -56,14 +57,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (restaurantListFragment != null) {
-                    final String searchString = s != null ? s.toString() : "";
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-//                            setNoProfilesView(searchString);
-                        }
-                    });
-//                    searchPeopleFragment.setSearchString(searchString);
+                    searchString = s != null ? s.toString() : "";
                     if (!searchString.equals("")) {
 
                         switch (searchBar.selectedLocationType) {
@@ -102,13 +96,13 @@ public class SearchFragment extends Fragment {
         searchBar.setOnLocationSelectedListener(new SearchBar.OnLocationSelectedListener() {
             @Override
             public void onLocationSelected(String location) {
-                restaurantListFragment.filter(location, null);
+                restaurantListFragment.filter(location, searchString);
                 queryBox.setEnabled(true);
             }
 
             @Override
             public void onLocationSelected(double lat, double lng) {
-                restaurantListFragment.filter(lat, lng, null);
+                restaurantListFragment.filter(lat, lng, searchString);
                 queryBox.setEnabled(true);
             }
         });
@@ -117,6 +111,9 @@ public class SearchFragment extends Fragment {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         searchBar.handleOnActivityCompleted(requestCode, resultCode, data);
+    }
+    public void onRequestPermissionsResult(int requestCode, int grantresult) {
+        searchBar.onRequestPermissionsResult(requestCode, grantresult);
     }
 
 }

@@ -52,19 +52,13 @@ public class RestaurantsFragment extends BaseFragment {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_restaurant_list, container, false);
         setSuccessView(view);
-        setInitViewText("Enter Location to view Restaurants");
+        setInitViewText("Enter Location to view Venues");
 
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-//            if (mColumnCount <= 1) {
-//                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-//            } else {
-//                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-//            }
-
             adapter = new RestaurantsRecyclerViewAdapter(getContext(), restaurants);
             recyclerView.setAdapter(adapter);
 
@@ -78,10 +72,15 @@ public class RestaurantsFragment extends BaseFragment {
             if (response.isOkay) {
                 if (response.data != null) {
                     List<Restaurant> data = (List<Restaurant>) response.data;
-                    restaurants.clear();
-                    restaurants.addAll(data);
-                    adapter.notifyDataSetChanged();
-                    onSuccess();
+                    if (data.size() > 0) {
+                        restaurants.clear();
+                        restaurants.addAll(data);
+                        adapter.notifyDataSetChanged();
+                        onSuccess();
+                    }
+                    else {
+                        onNoDataFound();
+                    }
                 }
                 else {
                     onNoDataFound();

@@ -1,6 +1,7 @@
 package com.grabbd.foursquare.foursquare;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements ExploreFragment.O
 
     private ExploreFragment exploreFragment;
     private SearchFragment searchFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,13 +67,11 @@ public class MainActivity extends AppCompatActivity implements ExploreFragment.O
         Log.i("TAG", "  " + requestCode + ",  " + resultCode + ", ");
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case ExploreFragment.REQUEST_CODE_AUTOCOMPLETE: ;
-                case ExploreFragment.REQUEST_CODE_LOCATION_PERMISSION: {
+                case ExploreFragment.REQUEST_CODE_AUTOCOMPLETE: {
                     exploreFragment.onActivityResult(requestCode, resultCode, data);
                     break;
                 }
-                case SearchFragment.REQUEST_CODE_AUTOCOMPLETE: ;
-                case SearchFragment.REQUEST_CODE_LOCATION_PERMISSION: {
+                case SearchFragment.REQUEST_CODE_AUTOCOMPLETE: {
                     searchFragment.onActivityResult(requestCode, resultCode, data);
                     break;
                 }
@@ -79,6 +79,24 @@ public class MainActivity extends AppCompatActivity implements ExploreFragment.O
             }
 
         }
+    }
+
+    /* Once the permission is granted, delegate to respective fragment's search bar. Do nothing if permission is removed*/
+
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        for (int i = 0; i < permissions.length; i++) {
+            int grantResult = grantResults[i];
+            if (grantResult == PackageManager.PERMISSION_GRANTED) {
+                if (requestCode == ExploreFragment.REQUEST_CODE_LOCATION_PERMISSION) {
+                    exploreFragment.onRequestPermissionsResult(requestCode, grantResult);
+                } else if (requestCode == SearchFragment.REQUEST_CODE_LOCATION_PERMISSION) {
+                    exploreFragment.onRequestPermissionsResult(requestCode, grantResult);
+                }
+            }
+        }
+
     }
 
     @Override

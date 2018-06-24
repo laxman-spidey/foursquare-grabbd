@@ -64,6 +64,7 @@ public class ExploreFragment extends Fragment {
     }
 
     private ViewGroup sectionList;
+    private String selectedSection = null;
     private void setupSectionList(View view) {
 
         sectionList = view.findViewById(R.id.sectionsList);
@@ -73,6 +74,7 @@ public class ExploreFragment extends Fragment {
         for(int i=0; i<count; i++) {
             v = (SectionView) sectionList.getChildAt(i);
             v.setOnSelectedListener(selectedText -> {
+                selectedSection = selectedText;
                 switch (searchBar.selectedLocationType) {
                     case -1: break;
                     case SearchBar.LOCATION_TYPE_PLACE: {
@@ -98,13 +100,13 @@ public class ExploreFragment extends Fragment {
         searchBar.setOnLocationSelectedListener(new SearchBar.OnLocationSelectedListener() {
             @Override
             public void onLocationSelected(String location) {
-                restaurantListFragment.filter(location, null);
+                restaurantListFragment.filter(location, selectedSection);
                 sectionList.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onLocationSelected(double lat, double lng) {
-                restaurantListFragment.filter(lat, lng, null);
+                restaurantListFragment.filter(lat, lng, selectedSection);
                 sectionList.setVisibility(View.VISIBLE);
             }
         });
@@ -121,6 +123,9 @@ public class ExploreFragment extends Fragment {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         searchBar.handleOnActivityCompleted(requestCode, resultCode, data);
+    }
+    public void onRequestPermissionsResult(int requestCode, int grantresult) {
+        searchBar.onRequestPermissionsResult(requestCode, grantresult);
     }
 
     @Override
