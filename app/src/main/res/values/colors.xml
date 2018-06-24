@@ -6,4 +6,5 @@
     <color name="tabSelectedColor">@color/white</color>
     <color name="tabColor">#33FFFFFF</color>
     <color name="white">#FFFFFF</color>
+    <color name="sectionSelected">#f8bbd0</color>
 </resources>

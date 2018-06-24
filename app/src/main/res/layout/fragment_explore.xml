@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/com.grabbd.foursquare.foursquare"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ExploreFragment">
 
     <!--<include-->
-        <!--android:id="@+id/searchbar"-->
-        <!--layout="@layout/search_bar" />-->
+    <!--android:id="@+id/searchbar"-->
+    <!--layout="@layout/search_bar" />-->
     <!--<com.grabbd.foursquare.foursquare.SearchBar-->
-        <!--android:id="@+id/searchbar"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
+    <!--android:id="@+id/searchbar"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content">-->
 
 
     <RelativeLayout
@@ -21,22 +20,98 @@
         android:layout_height="wrap_content">
 
     </RelativeLayout>
+
     <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_below="@+id/searchBarContainer"
-        android:layout_height="wrap_content">
-        <LinearLayout
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:layout_below="@+id/searchBarContainer">
+
+        <LinearLayout xmlns:custom="http://schemas.android.com/apk/res/com.grabbd.foursquare.foursquare"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <com.grabbd.foursquare.foursquare.SectionView
+                android:id="@+id/foodSection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                custom:iconResource="@drawable/ic_food"
+                custom:sectionLabel="Food">
+
+            </com.grabbd.foursquare.foursquare.SectionView>
+
+            <com.grabbd.foursquare.foursquare.SectionView
+                android:id="@+id/drinksSection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                custom:iconResource="@drawable/ic_drinks"
+                custom:sectionLabel="Drinks">
+
+            </com.grabbd.foursquare.foursquare.SectionView>
+
+            <com.grabbd.foursquare.foursquare.SectionView
+                android:id="@+id/coffeeSection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                custom:iconResource="@drawable/ic_coffee"
+                custom:sectionLabel="Coffee">
+
+            </com.grabbd.foursquare.foursquare.SectionView>
+
+            <com.grabbd.foursquare.foursquare.SectionView
+                android:id="@+id/shopsSection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                custom:iconResource="@drawable/ic_shops"
+                custom:sectionLabel="Shops">
+
+            </com.grabbd.foursquare.foursquare.SectionView>
+
+            <com.grabbd.foursquare.foursquare.SectionView
+                android:id="@+id/artsSection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                custom:iconResource="@drawable/ic_art"
+                custom:sectionLabel="Arts">
+
+            </com.grabbd.foursquare.foursquare.SectionView>
+
+            <com.grabbd.foursquare.foursquare.SectionView
+                android:id="@+id/outdoorSection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                custom:iconResource="@drawable/ic_outdoor"
+                custom:sectionLabel="Outdoors">
+
+            </com.grabbd.foursquare.foursquare.SectionView>
+
+            <com.grabbd.foursquare.foursquare.SectionView
+                android:id="@+id/sightSection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                custom:iconResource="@drawable/ic_sights"
+                custom:sectionLabel="Sights">
+
+            </com.grabbd.foursquare.foursquare.SectionView>
+
+            <com.grabbd.foursquare.foursquare.SectionView
+                android:id="@+id/trendingSection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                custom:iconResource="@drawable/ic_trending"
+                custom:sectionLabel="Trending">
+
+            </com.grabbd.foursquare.foursquare.SectionView>
+
         </LinearLayout>
     </HorizontalScrollView>
+
     <RelativeLayout
-        android:layout_below="@+id/searchBarContainer"
         android:id="@+id/restaurentListFragementContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/searchBarContainer">
 
 
     </RelativeLayout>
