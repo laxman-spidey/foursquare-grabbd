@@ -2,7 +2,6 @@ package com.grabbd.foursquare.foursquare;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,7 +15,7 @@ import com.grabbd.foursquare.foursquare.models.Restaurant;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RestaurantsFragment extends Fragment {
+public class RestaurantsFragment extends BaseFragment {
 
 
     private static final String ARG_ACTION = "action";
@@ -49,7 +48,11 @@ public class RestaurantsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_restaurant_list, container, false);
+        setSuccessView(view);
+        setInitViewText("Enter Location to view Restaurants");
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -65,7 +68,7 @@ public class RestaurantsFragment extends Fragment {
             recyclerView.setAdapter(adapter);
 
         }
-        return view;
+        return rootView;
     }
 
 
@@ -77,13 +80,20 @@ public class RestaurantsFragment extends Fragment {
                     restaurants.clear();
                     restaurants.addAll(data);
                     adapter.notifyDataSetChanged();
-
+                    onSuccess();
                 }
+                else {
+                    onNoDataFound();
+                }
+            }
+            else {
+                onError();
             }
         };
     }
 
     public void filter(String location, String section) {
+        inProgress();
         if (action == ACTION_EXPLORE) {
             FoursquareAPI.getInstance(getContext()).explore(location, section, getResponseListener());
         } else if (action == ACTION_SEARCH) {
@@ -91,6 +101,7 @@ public class RestaurantsFragment extends Fragment {
         }
     }
     public void filter(double lat, double lng, String section) {
+        inProgress();
         if (action == ACTION_EXPLORE) {
             FoursquareAPI.getInstance(getContext()).explore(lat, lng, section, getResponseListener());
         } else if (action == ACTION_SEARCH) {

@@ -70,8 +70,10 @@
                             android:hint="Search Location"
                             android:drawableLeft="@drawable/ic_location_on_24dp"
                             android:drawablePadding="6dp"
-                            android:textSize="14sp"
+                            android:textSize="16sp"
                             android:maxLines="1"
+                            android:inputType="text"
+                            android:ellipsize="end"
                             android:layout_gravity="center_vertical"
                             android:background="@color/white"/>
                         <ImageButton

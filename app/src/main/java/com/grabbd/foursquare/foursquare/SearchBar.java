@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
@@ -16,6 +18,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * TODO: document your custom view class.
@@ -71,34 +76,39 @@ public class SearchBar extends LinearLayout {
             requestLocationPermission();
             return;
         }
+
+        // Fetch latitude and longitude from the current location.
         mFusedLocationClient.getLastLocation()
-//                .addOnSuccessListener(activity, location -> {
-//
-//                    // Got last known location. In some rare situations this can be null.
-//                    if (location == null) {
-//                        Toast.makeText(activity, "Unable to locate you. Please try again.", Toast.LENGTH_SHORT).show();
-//                        return;
-//                    }
-//                    searchEditText.setText(location.getLatitude() +", "+ location.getLongitude());
-//                    listener.onLocationSelected(location.getLatitude(), location.getLongitude());
-//                })
-//                .addOnFailureListener(e -> {
-//                    e.printStackTrace();
-//                })
                 .addOnCompleteListener(activity, task -> {
                     if (task.isSuccessful()) {
-                        if(task.getResult() != null) {
+                        if (task.getResult() != null) {
                             Location location = task.getResult();
-                            lat =location.getLatitude();
+                            lat = location.getLatitude();
                             lng = location.getLongitude();
-                            searchEditText.setText(location.getLatitude() +", "+ location.getLongitude());
                             listener.onLocationSelected(location.getLatitude(), location.getLongitude());
-                        }
-                        else {
+
+                            // Try to get address from the co-ordinates. If not possible just put coordinates into the searchEditText
+                            List<Address> list = null;
+                            try {
+                                list = new Geocoder(activity).getFromLocation(location
+                                        .getLatitude(), location.getLongitude(), 1);
+
+                                String result = "";
+                                if (list != null & list.size() > 0) {
+                                    Address address = list.get(0);
+                                    result += address.getAddressLine(0);
+                                    searchEditText.setText(result);
+                                } else {
+                                    searchEditText.setText(location.getLatitude() + ", " + location.getLongitude());
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                searchEditText.setText(location.getLatitude() + ", " + location.getLongitude());
+                            }
+                        } else {
                             Toast.makeText(activity, "Unable to locate you. Please try again.", Toast.LENGTH_SHORT).show();
                         }
-                    }
-                    else {
+                    } else {
                         task.getException().printStackTrace();
                         Toast.makeText(activity, "Exception Unable to locate you. Please try again.", Toast.LENGTH_SHORT).show();
                     }
@@ -108,8 +118,7 @@ public class SearchBar extends LinearLayout {
     public void handleOnActivityCompleted(int requestCode, int resultCode, Intent data) {
         if (requestCode == locationPermissionRequestCode) {
             getCurrentLocation();
-        }
-        else if( requestCode == placesAutoCompleteRequestCode) {
+        } else if (requestCode == placesAutoCompleteRequestCode) {
             handleAutoCompleteData(requestCode, resultCode, data);
         }
 
@@ -152,8 +161,10 @@ public class SearchBar extends LinearLayout {
         this.placesAutoCompleteRequestCode = placesAutoCompleteRequestCode;
         this.locationPermissionRequestCode = locationPermissionRequestCode;
     }
+
     public interface OnLocationSelectedListener {
         void onLocationSelected(String location);
+
         void onLocationSelected(double lat, double lng);
     }
 }

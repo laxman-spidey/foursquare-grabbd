@@ -11,10 +11,16 @@
         android:layout_height="wrap_content"></RelativeLayout>
 
     <EditText
+
         android:id="@+id/queryBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/searchBarContainer"
+        android:drawableLeft="@drawable/ic_search_24dp"
+        android:drawablePadding="6dp"
+        android:layout_margin="10dp"
+
+        android:hint="Search Restaurants"
         />
     <RelativeLayout
         android:id="@+id/restaurantSearchListFragmentContainer"

@@ -29,9 +29,11 @@
             android:elevation="6sp"
             app:tabBackground="@color/colorPrimary"
             app:tabIndicatorColor="@color/colorAccent"
-            app:tabSelectedTextColor="@color/colorAccent"
-            app:tabTextColor="@color/white"
-
+            app:tabSelectedTextColor="@color/tabSelectedColor"
+            app:tabTextColor="@color/tabColor"
+            app:tabMode="fixed"
+            app:tabGravity="fill"
+            app:tabMaxWidth="0dp"
             app:tabIndicatorHeight="2dp">
 
             <android.support.design.widget.TabItem
