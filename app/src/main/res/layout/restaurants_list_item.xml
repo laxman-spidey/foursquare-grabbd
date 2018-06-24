@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_marginBottom="2dp"
     android:background="@color/white"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -9,46 +8,61 @@
         android:id="@+id/headerContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/restaurantImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:src="@drawable/ic_online_store"
+            android:layout_gravity="center_vertical"
             />
-
         <TextView
             android:id="@+id/restaurantName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
+            android:textSize="18dp"
             android:text="something"
             android:textAppearance="?attr/textAppearanceListItem" />
     </LinearLayout>
     <RelativeLayout
         android:id="@+id/restaurantDetailsContainer"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginBottom="8dp"
         android:layout_below="@id/headerContainer">
-        <TextView
-            android:id="@+id/city"
+
+        <ImageView
+            android:id="@+id/locationIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="city"/>
+            android:src="@drawable/ic_location_on_green_24dp"/>
+
         <TextView
-            android:id="@+id/state"
-            android:layout_below="@+id/city"
+            android:id="@+id/address"
+            android:layout_toRightOf="@+id/locationIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="state"/>
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text=""/>
         <TextView
-            android:id="@+id/country"
-            android:layout_below="@+id/state"
+            android:id="@+id/categoriesLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="country"/>
+            android:layout_below="@id/locationIcon"
+            android:text="Categories:  "/>
+        <TextView
+            android:id="@+id/categories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/categoriesLabel"
+            android:layout_alignTop="@+id/categoriesLabel"
+            android:text=""/>
 
     </RelativeLayout>
 </RelativeLayout>

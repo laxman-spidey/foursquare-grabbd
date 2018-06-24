@@ -74,8 +74,8 @@ public class RestaurantsRecyclerViewAdapter extends RecyclerView.Adapter<Restaur
         public final View mDetailsView;
         public final ImageView mImageView;
         public final TextView mNameView;
-        public final TextView mCity;
-        public final TextView mState;
+        public final TextView mAddress;
+        public final TextView mCategories;
 
         public Restaurant mItem;
 
@@ -86,13 +86,19 @@ public class RestaurantsRecyclerViewAdapter extends RecyclerView.Adapter<Restaur
             mDetailsView = view.findViewById(R.id.restaurantDetailsContainer);
             mImageView = view.findViewById(R.id.restaurantImage);
             mNameView = view.findViewById(R.id.restaurantName);
-            mCity = view.findViewById(R.id.city);
-            mState = view.findViewById(R.id.state);
+            mAddress = view.findViewById(R.id.address);
+            mCategories = view.findViewById(R.id.categories);
         }
 
         public void setValues(Restaurant restaurant) {
             mItem = restaurant;
             mNameView.setText(restaurant.name);
+            mAddress.setText(restaurant.address);
+            String categories = "";
+            for (String category: restaurant.categories) {
+                categories += category;
+            }
+            mCategories.setText(categories);
         }
 //        @Override
 //        public String toString() {

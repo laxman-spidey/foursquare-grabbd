@@ -48,6 +48,7 @@ public class SearchFragment extends Fragment {
     private void setupQueryBox(View view) {
         queryBox = view.findViewById(R.id.queryBox);
         queryBox.setEnabled(false);
+        queryBox.setHint("Enter location to enable search");
         queryBox.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -98,12 +99,14 @@ public class SearchFragment extends Fragment {
             public void onLocationSelected(String location) {
                 restaurantListFragment.filter(location, searchString);
                 queryBox.setEnabled(true);
+                queryBox.setHint("Search Restaurants");
             }
 
             @Override
             public void onLocationSelected(double lat, double lng) {
                 restaurantListFragment.filter(lat, lng, searchString);
                 queryBox.setEnabled(true);
+                queryBox.setHint("Search Restaurants");
             }
         });
 

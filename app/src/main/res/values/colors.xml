@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#0732a2</color>
     <color name="colorAccent">#f94877</color>
     <color name="tabSelectedColor">@color/white</color>
-    <color name="tabColor">#33FFFFFF</color>
+    <color name="tabColor">#20FFFFFF</color>
     <color name="white">#FFFFFF</color>
     <color name="sectionSelected">#f8bbd0</color>
 </resources>
